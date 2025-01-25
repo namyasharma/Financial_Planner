@@ -16,7 +16,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+from core.views import BudgetListCreateView, GoalListCreateView, SpendingSummaryView, BulkGoalCreateView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('budget/', BudgetListCreateView.as_view(), name='budget-list-create'),
+    path('goals/', GoalListCreateView.as_view(), name='goal-list-create'),
+    path('goals/bulk-create/', BulkGoalCreateView.as_view(), name='bulk-goal-create'),
+    path('spending-summary/', SpendingSummaryView.as_view(), name='spending-summary'),
 ]
