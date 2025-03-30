@@ -106,7 +106,7 @@ WSGI_APPLICATION = 'financial_planner.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',
+        'NAME': 'financial_planner',
         'USER': 'postgres',
         'PASSWORD': 'mysecretpassword',
         'HOST': 'localhost',  
@@ -133,6 +133,8 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+AUTH_USER_MODEL = 'core.CustomUser'
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),

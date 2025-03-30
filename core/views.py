@@ -40,18 +40,21 @@ class LoginView(APIView):
         user = authenticate(username=username, password=password)
         
         if user:
-            refresh = RefreshToken.for_user(user)
-            access_token = refresh.access_token
+            try:
+                refresh = RefreshToken.for_user(user)
+                access_token = refresh.access_token
 
-            return Response({
-                "refresh": str(refresh),
-                "access": str(access_token),
-                "access_expires_at": datetime.now(timezone.utc) + refresh.access_token.lifetime,
-                "refresh_expires_at": datetime.now(timezone.utc) + refresh.lifetime
-            }, status=status.HTTP_200_OK)
-        
+                return Response({
+                    "refresh": str(refresh),
+                    "access": str(access_token),
+                    "access_expires_at": datetime.now(timezone.utc) + refresh.access_token.lifetime,
+                    "refresh_expires_at": datetime.now(timezone.utc) + refresh.lifetime
+                }, status=status.HTTP_200_OK)
+            except Exception as e:
+                print(f"Error: {str(e)}")
+                return Response({"error": "Something went wrong"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         return Response({"error": "Invalid Credentials"}, status=status.HTTP_400_BAD_REQUEST)
-     
+
       
 class GoalListCreateView(APIView):
     permission_classes = [IsAuthenticated]
@@ -213,6 +216,7 @@ class ExpenseListCreateView(APIView):
 
     def get(self, request):
         expenses = Expense.objects.filter(budget__user=request.user)
+        print(expenses)
         serializer = ExpenseSerializer(expenses, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 

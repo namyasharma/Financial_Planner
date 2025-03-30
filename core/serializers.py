@@ -10,6 +10,7 @@ class UserSerializer(serializers.ModelSerializer):
         extra_kwargs = {"password": {"write_only": True}}  # Prevent password from being returned
 
     def create(self, validated_data):
+        print(f"Validated data: {validated_data}")
         user = User( 
             username=validated_data["username"],
             email=validated_data["email"],
@@ -66,7 +67,7 @@ class ExpenseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Expense
-        fields = ['id', 'amount', 'description', 'budget', 'budget_name', 'date', 'created_at']
+        fields = ['id', 'amount', 'description', 'budget', 'budget_name', 'date', 'created_at', 'recurring']
         extra_kwargs = {
             'user': {'read_only': True},
             'budget': {'required': True},
